@@ -1,0 +1,78 @@
+<html lang="en">
+
+{% extends 'base_template.jinja2' %}
+{% block content %}
+
+    <head>
+        <title>Users</title>
+    </head>
+
+    <body class="container">
+
+    <h1>Users</h1>
+
+    <div id="browse">
+        <!-- populate browsing section of Users -->
+        <table>
+            <legend>To modify a user, select edit.</legend><br/>
+            {% if data %}
+                <thead>
+                <tr>
+                    {% for key in data[0].keys() %}
+                        <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                    {% endfor %}
+                        <th scope="col">Edit</th>
+                </tr>
+
+                <tbody>
+                {% for item in data %}
+                    <tr>
+                        {% for key in item.keys() %}
+                            <td> {{ item[key] }} </td>
+                        {% endfor %}
+                        <td><a href="edit_user/{{ item["User ID"] }}" class="btn btn-default">Edit</a></td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+        <p>&nbsp;</p>
+    </div>    <!-- browse -->
+
+    <div id="insert">
+        <!-- insert new User -->
+        <form id="insertUser" action="/users" method="post">
+            <legend><strong>Add User</strong></legend>
+            <fieldset>
+                <label for="firstName">First Name:</label><br/>
+                <input type="text" class="form-control" id="firstName" name="firstName" pattern="[A-Za-z]{1,}"
+                       title="First Name (One word, numbers and special characters not allowed)" placeholder="Required"
+                       required><br/>
+
+                <label for="lastName">Last Name:</label><br/>
+                <input type="text" class="form-control" id="lastName" name="lastName" pattern="[A-Za-z]{1,}"
+                       title="Last Name (One word, numbers and special characters not allowed)" placeholder="Required"
+                       required><br/>
+
+                <label for="address"> Address: </label><br/>
+                <input type="text" class="form-control" id="address" name="address" pattern="[A-Za-z0-9,.#\- ]+"
+                       title="Address (Only alphanumeric and [,.#-] allowed)" placeholder="Required" required><br/>
+
+                <label for="specialization"> Specialization: </label><br/>
+                <input type="text" class="form-control" id="specialization" name="specialization"
+                       pattern="[A-Za-z0-9 ]+" title="Specialization (No special characters allowed)"
+                       placeholder="Optional"><br/>
+
+                <br/><label for="bio"> Bio: </label><br/>
+                <textarea class="form-control" id="bio" name="bio" rows="5" cols="33" placeholder="Optional"></textarea>
+            </fieldset>
+
+            <input type="submit" value="Add User" name="Add_User" class="btn btn-primary" style="margin:.5rem; margin-left: 260px;">
+        </form>
+    </div><!--insert-->
+
+
+    </body>
+
+{% endblock %}
+
+</html>

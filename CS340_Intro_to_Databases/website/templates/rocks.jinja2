@@ -1,0 +1,115 @@
+<html lang="en">
+
+{% extends 'base_template.jinja2' %}
+{% block content %}
+
+    <head>
+        <title>Rocks</title>
+
+    </head>
+    <body class="container">
+
+    <h1>Rocks</h1>
+
+    <h3>Search for rocks using any term in the Rocks table or add a rock below</h3>
+
+    <!-- Rock Search -->
+    <div id="search">
+        <form id="searchRocks" action="/rocks" method="post">
+            <legend><strong>Search Rocks</strong></legend>
+            <fieldset>
+                <input type="text" class="form-control" id="search" name="search" placeholder="Search criteria"
+                       title="Search criteria" required>
+            </fieldset>
+            <input type="submit" value="Rock Search" name="Rock_Search" class="btn btn-primary" style="margin:.5rem; margin-left: 260px;">
+        </form>
+    </div> <!-- search -->
+
+    <p>&nbsp;</p>
+
+    <div id="browse">
+        <table>
+            <legend>Browsing Rocks</legend>
+            <br/>
+            {% if data %}
+                <thead>
+                <tr>
+                    {% for key in data[0].keys() %}
+                        <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for item in data %}
+                    <tr>
+                        {% for key in item.keys() %}
+                            <td> {{ item[key] }} </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            {% endif %}
+        </table>
+        <p>&nbsp;</p>
+    </div><!-- browse -->
+
+    <div id="insert">
+        <!-- insert new Rock -->
+        <form id="insertRock" action="/rocks" method="post">
+            <legend><strong>Add Rock</strong></legend>
+            <fieldset>
+
+                <label for="userID">Owner: </label><br/>
+                <select name="userID" id="userID">
+                    {% for item in users %}
+                        <option value={{ item["userID"] }}> {{ item["fullName"] }} </option>
+                    {% endfor %}
+                </select><br/>
+
+                <label for="name"> Rock Name: </label><br/>
+                <input type="text" class="form-control" id="name" name="name"
+                       pattern="[A-Za-z0-9!@#$%^&*_+\-='><.,? {}|]+"
+                       title="Rock Name (Alphanumeric and [!@#$%^&*()_+-='><.,?] allowed)"
+                       placeholder="Required" required><br/>
+
+                <label> Origin </label><br/>
+                <input type="text" class="form-control" id="geoOrigin" name="geoOrigin"
+                       pattern="[A-Za-z0-9!@#$%^&*_+\-='><.,? {}|]+"
+                       title="Origin (Alphanumeric and [!@#$%^&*()_+-='><.,?] allowed)"
+                       placeholder="Required" required><br/>
+
+                <label>Type:</label><br/>
+                <select class="form-control" id="type" name="type" placeholder="" required>
+                    <option value="">-- Rock Type --</option>
+                    <option value="Igneous">Igneous</option>
+                    <option value="Metamorphic">Metamorphic</option>
+                    <option value="Sedimentary">Sedimentary</option>
+                </select><br/>
+
+                <label> Chemical Composition </label><br/>
+                <input type="text" class="form-control" id="chemicalComp" name="chemicalComp"
+                       pattern="[A-Za-z0-9!@#$%^&*_+\-='><.,? {}|]+"
+                       title="Chemical Composition (Alphanumeric and [!@#$%^&*()_+-='><.,?] allowed)"
+                       placeholder="Required" required><br/>
+
+                <br/><label> Description </label><br/>
+                <textarea class="form-control" id="description" name="description" rows="5" cols="33"
+                          title="Rock Description" placeholder="Required" required></textarea>
+
+            </fieldset>
+
+            <input type="submit" value="Add Rock" name="Add_Rock" class="btn btn-primary" style="margin:.5rem; margin-left: 260px;">
+
+        </form>
+    </div><!--insert-->
+
+
+    <br/>
+
+
+    </body>
+
+{% endblock %}
+
+</html>

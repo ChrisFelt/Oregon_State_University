@@ -1,0 +1,100 @@
+<html lang="en">
+
+{% extends 'base_template.jinja2' %}
+{% block content %}
+
+    <head>
+        <title>Reviews</title>
+    </head>
+    <body class="container">
+
+    <h1>Reviews</h1>
+
+    <div id="browse">
+        <!-- populate browsing section of Reviews -->
+        <table>
+            <legend>To modify a review, select edit.</legend>
+            <br/>
+            {% if data %}
+                <thead>
+                <tr>
+                    {% for key in data[0].keys() %}
+                        <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                    {% endfor %}
+                    <th scope="col">Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in data %}
+                    <tr>
+                        {% for key in item.keys() %}
+                            {% if key == "Reviewer" %}
+                                {% if item[key] == None %}
+                                    <td> Anonymous</td>
+                                {% else %}
+                                    <td> {{ item[key] }} </td>
+                                {% endif %}
+                            {% else %}
+                                <td> {{ item[key] }} </td>
+                            {% endif %}
+                        {% endfor %}
+                        <td><a href="edit_review/{{ item["Review ID"] }}" class="btn btn-default">Edit</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            {% endif %}
+        </table>
+        <p>&nbsp;</p>
+    </div>    <!-- browse -->
+
+    <div id="insert">
+        <!-- insert new Review -->
+        <form id="insertReview" action="/reviews" method="post">
+            <legend><strong>Add Review</strong></legend>
+            <fieldset>
+
+                <label for="userID">Reviewer: </label><br/>
+                <select name="userID" id="userID">
+                    <option value="">Anonymous</option>
+                    {% for item in users %}
+                        <option value={{ item["userID"] }}> {{ item["fullName"] }} </option>
+                    {% endfor %}
+                </select><br/>
+
+                <label for="rockID">Rock: </label><br/>
+                <select name="rockID" id="rockID">
+                    {% for item in rocks %}
+                        <option value={{ item["rockID"] }}> {{ item["name"] }} </option>
+                    {% endfor %}
+                </select><br/>
+
+                <label> Rating: </label><br/>
+                <select class="rating" name="rating" id="rating" required>
+                    {% for x in range(6) %}
+                        <option value={{ x }}>{{ x }}</option>
+                    {% endfor %}
+                </select><br/>
+
+                <label for="title"> Review Title: </label><br/>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Required"
+                       pattern="[A-Za-z0-9!@#$%^&*)( _+\-='><.,?|{}]+"
+                       title="Review Title (Alphanumeric and [ !@#$%^&*()_+-='><.,?] allowed)" required><br/>
+
+                <br/><label> Review: </label><br/>
+                <textarea id="body" name="body" rows="5" cols="33" title="Review Body" placeholder="Required"
+                          required></textarea>
+
+
+            </fieldset>
+
+            <input type="submit" value="Add Review" name="Add_Review" class="btn btn-primary" style="margin:.5rem; margin-left: 260px;">
+        </form>
+    </div><!--insert-->
+
+    <br>
+
+    </body>
+
+{% endblock %}
+
+</html>

@@ -1,0 +1,121 @@
+###
+POST http://localhost:3000/exercises HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Sit Up",
+    "reps": 19,
+    "weight": 0,
+    "unit": "kgs",
+    "date": "02-27-22"
+}
+
+###
+GET http://localhost:3000/exercises HTTP/1.1
+
+###
+GET http://localhost:3000/exercises/621c381eb2e72b381cd7aa8f HTTP/1.1
+
+###
+
+PUT http://localhost:3000/exercises/621de9714a3879102f682222 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Sit Ups",
+    "reps": 99,
+    "weight": 1,
+    "unit": "lbs",
+    "date": "01-27-22"
+}
+
+###
+DELETE http://localhost:3000/exercises/621de9714a3879102f682222 HTTP/1.1
+
+
+###
+POST http://localhost:3000/exercises HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Bench Press",
+    "reps": 21,
+    "weight": 189,
+    "unit": "lbs",
+    "date": "02-27-22"
+}
+
+###
+POST http://localhost:3000/exercises HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Leg Press",
+    "reps": 120,
+    "weight": 322,
+    "unit": "lbs",
+    "date": "02-27-22"
+}
+
+###
+POST http://localhost:3000/exercises HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Squat",
+    "reps": 15,
+    "weight": 265,
+    "unit": "lbs",
+    "date": "02-27-22"
+}
+
+
+###
+POST http://localhost:3000/exercises HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Pull Up",
+    "reps": 25,
+    "weight": 160,
+    "unit": "lbs",
+    "date": "02-27-22"
+}
+
+
+###
+POST http://localhost:3000/exercises HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Dead Lift",
+    "reps": 11,
+    "weight": 230,
+    "unit": "lbs",
+    "date": "02-27-22"
+}
+
+
+###
+POST http://localhost:3000/exercises HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Crunch",
+    "reps": 53,
+    "weight": 0,
+    "unit": "kgs",
+    "date": "02-27-22"
+}
+
+###
+POST http://localhost:3000/exercises HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Military Press",
+    "reps": 12,
+    "weight": 55,
+    "unit": "lbs",
+    "date": "02-27-22"
+}

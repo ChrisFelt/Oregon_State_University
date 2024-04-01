@@ -1,0 +1,101 @@
+<html lang="en">
+
+{% extends 'base_template.jinja2' %}
+{% block content %}
+
+    <head>
+        <title>Shipments</title>
+    </head>
+
+    <body class="container">
+
+    <div id="browse">
+        <h1>Shipments</h1>
+        <!-- populate browsing section of Shipments-->
+        <table>
+            <legend>To add/remove rocks from a shipment OR modify shipment details, select edit.</legend>
+            <br/>
+            {% if data %}
+                <thead>
+                <tr>
+                    {% for key in data[0].keys() %}
+                        <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                    {% endfor %}
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in data %}
+                    <tr>
+                        {% for key in item.keys() %}
+                            <td> {{ item[key] }} </td>
+                        {% endfor %}
+                        <td><a href="edit_shipment/{{ item["Shipment Number"] }}" class="btn btn-default">Edit</a></td>
+                        <td><a href="delete_shipment/{{ item["Shipment Number"] }}" class="btn btn-default">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            {% endif %}
+        </table>
+
+        <p>&nbsp;</p>
+    </div>    <!-- browse -->
+
+
+    <div id="insert">
+        <!-- form to INSERT new data into Shipments-->
+        <form id="insertShipment" action="/shipments" method="post">
+            <legend><strong>Add Shipment: </strong></legend>
+            <fieldset>
+
+                <label for="user">Ship to: </label><br/>
+                <select name="user" id="user">
+                    {% for item in users %}
+                        {% for user in item %}
+                            <option> {{ item[user] }} </option>
+                        {% endfor %}
+                    {% endfor %}
+                </select><br/>
+
+                <label for="rock">Rock: </label><br/>
+                <select name="rock" id="rock">
+                    {% for item in rocks %}
+                        {% for rock in item %}
+                            <option> {{ item[rock] }} </option>
+                        {% endfor %}
+                    {% endfor %}
+                </select><br/>
+
+                <label for="shipOrigin">Origin: </label><br/>
+                <input type="text" class="form-control" id="shipOrigin" name="shipOrigin" pattern="[A-Za-z0-9,.#\- ]+"
+                       title="Shipment Origin (Only alphanumeric and [,.#-] allowed)"
+                       placeholder="Required" required><br/>
+
+                <label for="shipDest">Destination: </label><br/>
+                <input type="text" class="form-control" id="shipDest" name="shipDest" pattern="[A-Za-z0-9,.#\- ]+"
+                       title="Shipment Destination (Only alphanumeric and [,.#-] allowed)"
+                       placeholder="Required" required><br/>
+
+                <label for="shipDate">Shipment Date: </label><br/>
+                <input type="Date" class="form-control" id="shipDate" name="shipDate" placeholder="Required" required><br/>
+
+                <label for="miscNote">Notes: </label><br/>
+                <input type="text" class="form-control" id="miscNote" name="miscNote"
+                       title="Miscellaneous Notes"
+                       placeholder="Optional">
+
+            </fieldset>
+
+            <input type="submit" value="Add Shipment" name="Add_Shipment" class="btn btn-primary" style="margin:.5rem; margin-left: 260px;">
+
+
+        </form>
+    </div><!--insert-->
+
+    </body>
+
+{% endblock %}
+
+</html>

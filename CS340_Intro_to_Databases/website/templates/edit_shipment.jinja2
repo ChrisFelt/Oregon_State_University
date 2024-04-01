@@ -1,0 +1,182 @@
+<html lang="en">
+
+{% extends 'base_template.jinja2' %}
+{% block content %}
+
+    <head>
+        <title>Shipment Details</title>
+    </head>
+    <body class="container">
+
+    <h1>Editing Shipment:</h1>
+
+    <div>
+        <table>
+            <!-- display Shipment that is currently being edited-->
+            {% if readShipment %}
+                <thead>
+                <tr>
+                    {% for key in readShipment[0].keys() %}
+                        <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                    {% endfor %}
+                </tr>
+                <tbody>
+                {% for item in readShipment %}
+                    <tr>
+                        {% for key in item.keys() %}
+                            <td>{{ item[key] }}</td> {% endfor %}
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div><!-- display -->
+
+    <br>
+    <br>
+
+    <div id="edit">
+        <!-- form to edit data in Shipment-->
+        <form id="editShipment" action="/edit_shipment/{{ editShipment[0].shipmentID }}" method="post">
+            <legend><strong>Update Shipment Details:</strong></legend>
+            <fieldset>
+                <!-- send previous values too -->
+                <input type="hidden" value="{{ editShipment[0].user }}" class="form-control" id="prevUser"
+                       name="prevUser" required>
+
+                <input type="hidden" value="{{ editShipment[0].shipOrigin }}" class="form-control" id="prevShipOrigin"
+                       name="prevShipOrigin" required>
+
+                <input type="hidden" value="{{ editShipment[0].shipDest }}" class="form-control" id="prevShipDest"
+                       name="prevShipDest" required>
+
+                <input type="hidden" value="{{ editShipment[0].shipDate }}" class="form-control" id="prevShipDate"
+                       name="prevShipDate" required>
+
+                <input type="hidden" value="{{ editShipment[0].miscNote }}" class="form-control" id="prevMiscNote"
+                       name="prevMiscNote">
+                <!-- end previous values -->
+
+                <input type="hidden" value="{{ editShipment[0].shipmentID }}" class="form-control" id="shipmentID"
+                       name="shipmentID" required>
+
+                <label for="user">User Name: </label><br/>
+                <select name="user" id="user">
+                    <option selected>
+                        {{ shipUser[0].name }}
+                    </option>
+                    {% for item in shipUsersOption %}
+                        {% for shipUsersOption in item %}
+                            <option> {{ item[shipUsersOption] }} </option>
+                        {% endfor %}
+                    {% endfor %}
+                </select><br/>
+
+                <label for="shipOrigin">Origin: </label><br/>
+                <input type="text" value="{{ editShipment[0].shipOrigin }}" class="form-control" id="shipOrigin"
+                       name="shipOrigin" size="35" pattern="[A-Za-z0-9,.#\- ]+"
+                       title="Shipment Origin (Only alphanumeric and [,.#-] allowed)" required><br/>
+
+                <label for="shipDest">Destination: </label><br/>
+                <input type="text" value="{{ editShipment[0].shipDest }}" class="form-control" id="shipDest"
+                       name="shipDest" size="35" pattern="[A-Za-z0-9,.#\- ]+"
+                       title="Shipment Destination (Only alphanumeric and [,.#-] allowed)" required><br/>
+
+                <label for="shipDate">Shipment Date: </label><br/>
+                <input type="Date" value="{{ editShipment[0].shipDate }}" class="form-control" id="shipDate"
+                       name="shipDate" required><br/>
+
+                <label for="miscNote">Notes: </label><br/>
+                <input type="text" value="{{ editShipment[0].miscNote }}" class="form-control" id="miscNote"
+                       name="miscNote" size="35" title="Miscellaneous Notes">
+
+            </fieldset>
+
+            <input type="submit" value="Update Shipment" name="Edit_Shipment" class="btn btn-primary"
+                   style="margin:.5rem; margin-left: 260px;">
+            <a href='/shipments'><input class="btn-cancel" type="button" value="Cancel" style="margin: .5rem;"></a>
+
+        </form>
+    </div><!--edit-->
+
+    <p>&nbsp;</p>
+
+    <div id="browse">
+        <!-- populate list of Rocks in the Shipment-->
+        <legend><strong>Rocks in This Shipment:</strong></legend>
+        <table border="1" cellpadding="5">
+
+            {% if rocks %}
+                <thead>
+                <tr>
+                    {% for key in rocks[0].keys() %}
+                        <!-- skip first column -->
+                        {% if not loop.first %}
+                            <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                        {% endif %}
+                    {% endfor %}
+                    <th scope="col">Remove</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in rocks %}
+                    <tr>
+                        {% for key in item.keys() %}
+                            {% if not loop.first %}
+                                <td> {{ item[key] }} </td>
+                            {% endif %}
+                        {% endfor %}
+                        <td><a href="../delete_shipments_has_rocks/{{ item.shipmentHasRockID }}"
+                               class="btn btn-default">Remove</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            {% endif %}
+        </table>
+        <h3>Note: removing the last Rock will also delete the Shipment!</h3>
+
+    </div> <!-- browse rocks in shipment-->
+
+    <p>&nbsp;</p>
+
+    <div id="edit">
+        <!-- form to add rocks to Shipment-->
+        <form id="addShipmentsHasRocks" action="/add_shipments_has_rocks/{{ editShipment[0].shipmentID }}"
+              method="post">
+            <legend><strong>Add Rock to Shipment: </strong></legend>
+            <fieldset>
+
+                <input type="hidden" value="{{ editShipment[0].shipDate }}" class="form-control" id="shipDate"
+                       name="shipDate" required>
+
+                {% if addRocks|length == 0 %}
+                    <tr>No rocks remaining!</tr>
+
+                {% else %}
+                    <tr>
+                        <select name="rock" id="rock">
+
+                            {% for item in addRocks %}
+                                {% for rock in item %}
+
+                                    <option> {{ item[rock] }} </option>
+
+                                {% endfor %}
+                            {% endfor %}
+
+                        </select>
+
+                    </tr>
+
+                    </fieldset>
+                    <input type="submit" value="Add" name="Add_Shipments_has_Rocks" class="btn btn-primary"
+                           style="margin:.5rem; margin-left: 260px;">
+                {% endif %}
+        </form>
+    </div><!--edit-->
+
+
+    </body>
+
+{% endblock %}
+
+</html>

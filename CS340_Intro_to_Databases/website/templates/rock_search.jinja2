@@ -1,0 +1,61 @@
+<html lang="en">
+
+{% extends 'base_template.jinja2' %}
+{% block content %}
+
+    <head>
+        <title>Rock Search</title>
+    </head>
+    <body class="container">
+
+    <h1>Rock Search</h1>
+
+    <div id="browse">
+        <!-- populate Rock Search results -->
+        <legend><strong>Search Results For "{{ term }}": </strong></legend>
+        <br/>
+        <table>
+            {% if data %}
+                <thead>
+                <tr>
+                    {% for key in colData[0].keys() %}
+                        <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for item in data %}
+                    <tr>
+                        {% for key in item.keys() %}
+                            <td> {{ item[key] }} </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            {% endif %}
+        </table>
+        <p>&nbsp;</p>
+    </div> <!-- browse -->
+
+    <br/>
+
+    <div id="search">
+        <!-- form to make a new Rock Search -->
+        <form id="searchRocks" action="/rocks" method="post">
+            <legend><strong>New Rock Search</strong></legend>
+            <fieldset>
+                <input type="text" class="form-control" id="search" name="search"
+                       placeholder="New search criteria" required>
+            </fieldset>
+            <input type="submit" value="Rock Search" name="Rock_Search" class="btn btn-primary" style="margin:.5rem; margin-left: 260px;">
+            <a href='/rocks'><input class="btn-cancel" type="button" value="Return to Rocks" style="margin: .5rem;"></a>
+        </form>
+    </div> <!-- search -->
+
+
+    </body>
+
+{% endblock %}
+
+</html>

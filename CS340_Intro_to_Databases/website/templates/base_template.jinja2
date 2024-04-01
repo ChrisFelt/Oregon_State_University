@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <!-- NavBar -->
+    <nav id="navbar">
+        <a href="/index">Home</a>
+        <a href="/users">Users</a>
+        <a href="/rocks">Rocks</a>
+        <a href="/reviews">Reviews</a>
+        <a href="/shipments">Shipments</a>
+    </nav>
+
+    <!-- import sweetalert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    {% for message in get_flashed_messages() %}
+
+        <script>
+            swal('{{ message }}');
+        </script>
+
+    {% endfor %}
+
+
+</head>
+
+{% block content %}
+{% endblock %}
+
+<p>&nbsp;</p>
+
+<footer>
+  <p>© Rock Bottom</p>
+</footer>
+
+</html>

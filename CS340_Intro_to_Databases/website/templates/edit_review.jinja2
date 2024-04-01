@@ -1,0 +1,121 @@
+<html lang="en">
+
+{% extends 'base_template.jinja2' %}
+{% block content %}
+
+    <head>
+        <title>Edit Review</title>
+    </head>
+
+    <body class="container">
+    <div id="browse">
+        <!-- display Review being edited -->
+        <h1> Editing Review:</h1>
+        <table>
+            {% if readData %}
+                <thead>
+                <tr>
+                    {% for key in readData[0].keys() %}
+                        <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in readData %}
+                    <tr>
+                        {% for key in item.keys() %}
+                            {% if key == "Reviewer" %}
+                                {% if item[key] == None %}
+                                    <td> Anonymous</td>
+                                {% else %}
+                                    <td> {{ item[key] }} </td>
+                                {% endif %}
+                            {% else %}
+                                <td> {{ item[key] }} </td>
+                            {% endif %}
+
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            {% endif %}
+        </table>
+        <p>&nbsp;</p>
+    </div>    <!-- display -->
+
+    <div id="edit">
+        <!-- update Review -->
+        <form id="editReview" action="/edit_review/{{ data[0].reviewID }}" method="post">
+            <legend><strong>Update Review</strong></legend>
+            <fieldset>
+
+                <input type="hidden" value="{{ data[0].id }}" class="form-control" id="reviewID" name="reviewID"
+                       required>
+
+                <input type="hidden" value="{{ data[0]["userID"] }}" class="form-control" id="prevUserID"
+                       name="prevUserID" required>
+
+                <input type="hidden" value="{{ data[0]["rockID"] }}" class="form-control" id="prevRockID"
+                       name="prevRockID" required>
+
+                <label for="userID">Reviewer: </label><br/>
+                <select name="userID" id="userID">
+                    <option value="">Anonymous</option>
+                    {% for item in users %}
+                        {% if item["userID"] == data[0]["userID"] %}
+                            <option value={{ item["userID"] }} selected> {{ item["fullName"] }} </option>
+                        {% else %}
+                            <option value={{ item["userID"] }}> {{ item["fullName"] }} </option>
+                        {% endif %}
+                    {% endfor %}
+                </select><br/>
+
+                <label for="rockID">Rock: </label><br/>
+                <select name="rockID" id="rockID">
+                    {% for item in rocks %}
+                        {% if item["rockID"] == data[0]["rockID"] %}
+                            <option value={{ item["rockID"] }} selected> {{ item["name"] }} </option>
+                        {% else %}
+                            <option value={{ item["rockID"] }}> {{ item["name"] }} </option>
+                        {% endif %}
+                    {% endfor %}
+                </select><br/>
+
+                <label> Rating: </label><br/>
+                <select class="rating" name="rating" id="rating" required>
+                    {% for x in range(6) %}
+                        {% if x == data[0]["rating"] %}
+                            <option value={{ x }} selected>{{ x }}</option>
+                        {% else %}
+                            <option value={{ x }}>{{ x }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select><br/>
+
+                <label for=" title"> Review Title: </label><br/>
+                <input type="text" value="{{ data[0]["title"] }}" class="form-control" id="title" name="title"
+                       placeholder="" pattern="[A-Za-z0-9!@#$%^&*_+\-='><.,? {}|]+"
+                       title="Review Title (Alphanumeric and [!@#$%^&*()_+-='><.,?] allowed)" required><br/>
+
+                <br/><label> Review: </label><br/>
+                <textarea id="body" name="body" rows="5" cols="33" title="Review Body" required>{{ data[0]["body"] }}
+                </textarea>
+
+
+            </fieldset>
+
+            <input type="submit" value="Edit Review" name="Edit_Review" class="btn btn-primary" style="margin:.5rem; margin-left: 260px;">
+            <a href='/reviews'><input class="btn-cancel" type="button" value="Cancel" style="margin: .5rem"></a>
+
+        </form>
+    </div><!-- update -->
+
+
+    <br>
+
+
+    </body>
+
+{% endblock %}
+
+</html>

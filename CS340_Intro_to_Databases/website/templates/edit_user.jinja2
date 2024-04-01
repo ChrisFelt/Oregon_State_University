@@ -1,0 +1,77 @@
+<html lang="en">
+
+{% extends 'base_template.jinja2' %}
+{% block content %}
+
+    <head>
+        <title>Edit User</title>
+    </head>
+
+    <body class="container">
+    <div>
+        <!-- display User being edited -->
+        <h1> Editing User:</h1>
+
+        <table>
+            {% if data %}
+                <thead>
+                <tr>
+                    {% for key in data[0].keys() %}
+                        <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                    {% endfor %}
+                </tr>
+                <tbody>
+                {% for item in data %}
+                    <tr>
+                        {% for key in item.keys() %}
+                            <td>{{ item[key] }}</td> {% endfor %}
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div> <!-- display -->
+
+    <p>&nbsp;</p>
+
+    <div id="edit">
+        <!-- update User -->
+        <form id="editUser" action="/edit_user/{{ data[0].userID }}" method="post">
+            <legend><strong>Update User Details:</strong></legend>
+            <fieldset>
+                <input type="hidden" value="{{ data[0].userID }}" class="form-control" id="userID" name="userID"
+                       required>
+
+                <label for="make">First name:</label><br/>
+                <input type="text" value="{{ data[0].firstName }}" class="form-control" id="firstName" name="firstName"
+                       pattern="[A-Za-z]{1,}" title="First Name (One word, numbers and special characters not allowed)"
+                       required><br/>
+
+                <label for="model">Last name:</label><br/>
+                <input type="text" value="{{ data[0].lastName }}" class="form-control" id="lastName" name="lastName"
+                       pattern="[A-Za-z]{1,}" title="Last Name (One word, numbers and special characters not allowed)"
+                       required><br/>
+
+                <label for="address">Address:</label><br/>
+                <input type="text" value="{{ data[0].address }}" class="form-control" id="address" name="address"
+                       pattern="[A-Za-z0-9,.#\- ]+" title="Address (Only alphanumeric and [,.#-] allowed)"
+                       required><br/>
+
+                <label for="specialization">Specialization:</label><br/>
+                <input type="text" value="{{ data[0].specialization }}" class="form-control" id="specialization"
+                       name="specialization" pattern="[A-Za-z0-9 ]+"
+                       title="Specialization (No special characters allowed)"><br/>
+
+                <br/><label for="bio"> Bio: </label><br/>
+                <textarea class="form-control" id="bio" name="bio" rows="5" cols="33"
+                          placeholder="Optional">{{ data[0].bio }}</textarea>
+
+            </fieldset>
+            <input type="submit" value="Edit User" name="Edit_User" class="btn btn-primary" style="margin:.5rem; margin-left: 260px;">
+            <a href='/users'><input class="btn-cancel" type="button" value="Cancel" style="margin: .5rem;"></a>
+        </form>
+    </div> <!-- update -->
+    </body>
+
+{% endblock %}
+
+</html>
