@@ -1,3 +1,3 @@
-This repository contains all of my shareable computer science coursework at Oregon State University.
+This repository contains all of my shareable computer science coursework for Oregon State University.
 
-Each subdirectory contains the portfolio project/other shareable work for the respective class.
+Each subdirectory is differentiated by class name and contains the respective portfolio project and other shareable work for that class.
